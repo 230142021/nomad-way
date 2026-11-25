@@ -29,8 +29,17 @@ function destination(body) {
     featured: !!body.featured,
     activities: strArr(body.activities, null, 40),
     tips: { en: strArr(body.tips && body.tips.en, null, 500), ru: strArr(body.tips && body.tips.ru, null, 500) },
-    images: strArr(body.images, null, 1000).filter(u => /^https?:\/\//i.test(u))
+    images: [],
+    credits: []
   };
+  // Keep images and their credits aligned; only http(s) URLs are allowed.
+  (Array.isArray(body.images) ? body.images : []).forEach((u, i) => {
+    const url = str(u, 1000);
+    if (/^https?:\/\//i.test(url)) {
+      d.images.push(url);
+      d.credits.push(str(Array.isArray(body.credits) ? body.credits[i] : '', 200));
+    }
+  });
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(d.slug)) errors.push('slug');
   if (!d.name.en || !d.name.ru) errors.push('name');
   if (!REGIONS.includes(d.region)) errors.push('region');

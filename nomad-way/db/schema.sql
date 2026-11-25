@@ -30,6 +30,9 @@ CREATE INDEX IF NOT EXISTS idx_destinations_region ON destinations (region);
 CREATE INDEX IF NOT EXISTS idx_destinations_categories ON destinations USING GIN (categories);
 
 -- Predefined route templates used by the Trip Planner
+-- Photo authors, aligned with images[] (added in v1.1)
+ALTER TABLE destinations ADD COLUMN IF NOT EXISTS credits TEXT[] NOT NULL DEFAULT '{}';
+
 CREATE TABLE IF NOT EXISTS route_templates (
   id          VARCHAR(80) PRIMARY KEY,
   position    INTEGER     NOT NULL DEFAULT 0,

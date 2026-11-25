@@ -439,3 +439,31 @@ textarea.input { resize: vertical; min-height: 120px; }
 .sm-close { position: absolute; top: 6px; right: 8px; border: 0; background: #fff; width: 28px; height: 28px; border-radius: 50%; font-size: 1.2rem; z-index: 2; }
 .confirm-box { background: #fff; border-radius: var(--radius); padding: 24px; max-width: 380px; width: 100%; box-shadow: var(--shadow-lg); }
 .confirm-box p { margin-bottom: 18px; font-weight: 500; }
+
+/* Photos */
+.cat-tile__bg img, .cta-band__bg img, .about-row__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .7s var(--ease); }
+.cat-tile:hover .cat-tile__bg img { transform: scale(1.08); }
+.map-list .thumb img, .popup .thumb img, .table .thumb img { width: 100%; height: 100%; object-fit: cover; }
+.hero__bg img { animation: heroZoom 18s ease-out both; }
+@keyframes heroZoom { from { transform: scale(1.08); } to { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .hero__bg img { animation: none; } }
+.credits { font-size: .8rem; color: var(--muted); margin: -24px 0 32px; }
+.credits a { color: var(--muted); text-decoration: underline; }
+.gallery--1 { grid-template-columns: 1fr; grid-template-rows: 380px; }
+.gallery--2 { grid-template-columns: 1fr 1fr; grid-template-rows: 300px; }
+.gallery--1 button:first-child, .gallery--2 button:first-child { grid-row: auto; }
+.gallery--3 { grid-template-columns: 2fr 1fr; }
+.gallery--4 button:nth-child(4) { grid-column: span 2; }
+.lightbox__fig { margin: 0; width: min(1100px, 100%); }
+.lightbox__fig .lightbox__img { width: 100%; aspect-ratio: auto; max-height: 80vh; background: #000; display: flex; align-items: center; justify-content: center; }
+.lightbox__fig .lightbox__img img { width: 100%; height: auto; max-height: 80vh; object-fit: contain; }
+.lightbox__fig .lightbox__img svg { aspect-ratio: 16/10; }
+.lightbox figcaption { color: rgba(255,255,255,.8); font-size: .85rem; margin-top: 10px; text-align: center; }
+.lightbox figcaption a { color: #fff; }
+
+/* Telegram floating button */
+.tg-float { position: fixed; right: 20px; bottom: 20px; width: 56px; height: 56px; border-radius: 50%; background: #229ED9; color: #fff; display: grid; place-items: center; box-shadow: 0 10px 24px -8px rgba(34,158,217,.7); z-index: 1500; transition: transform .25s var(--ease); }
+.tg-float:hover { transform: scale(1.08); }
+.tg-float svg { width: 26px; height: 26px; margin-right: 2px; }
+@media print { .tg-float { display: none !important; } }
+@media (max-width: 640px) { .gallery--2, .gallery--3 { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 140px; } .gallery--3 button:first-child { grid-column: 1 / -1; grid-row: auto; } .gallery--4 button:nth-child(4) { grid-column: auto; } }

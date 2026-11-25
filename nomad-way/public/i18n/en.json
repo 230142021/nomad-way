@@ -144,7 +144,8 @@
     "similar": "You may also like",
     "notFound": "Destination not found.",
     "coords": "Coordinates",
-    "addPlanner": "Plan a trip here"
+    "addPlanner": "Plan a trip here",
+    "photos": "Photos"
   },
   "map": {
     "title": "Interactive map",
@@ -206,7 +207,8 @@
     "delete": "Delete",
     "open": "Open",
     "based": "Based on template",
-    "seasonNote": "Only places that are accessible in {season} are included."
+    "seasonNote": "Only places that are accessible in {season} are included.",
+    "shareTg": "Send to Telegram"
   },
   "favorites": {
     "title": "Favorites",
@@ -231,7 +233,11 @@
     "invalidEmail": "Please enter a valid email address.",
     "info": "Contact information",
     "address": "Bishkek, Kyrgyzstan",
-    "follow": "Follow us"
+    "follow": "Follow us",
+    "owner": "Contact person",
+    "phone": "Phone",
+    "writeTg": "Message on Telegram",
+    "tgNote": "Messages from the form are also delivered to our Telegram."
   },
   "guide": {
     "title": "Travel guide",
@@ -442,13 +448,15 @@
     "modeLocal": "Demo (browser storage)",
     "resetDemo": "Reset demo data",
     "from": "From",
-    "date": "Date"
+    "date": "Date",
+    "credits": "Photo authors (one per line, same order as the photos)"
   },
   "footer": {
     "text": "A bilingual travel guide to Kyrgyzstan's mountains, lakes and nomad culture.",
     "explore": "Explore",
     "info": "Information",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "photos": "Photos: Wikimedia Commons contributors (CC licenses)."
   },
   "common": {
     "loading": "Loading…",

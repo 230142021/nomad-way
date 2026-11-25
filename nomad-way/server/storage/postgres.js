@@ -23,7 +23,8 @@ function rowToDestination(r) {
     featured: r.featured,
     activities: r.activities,
     tips: { en: r.tips_en, ru: r.tips_ru },
-    images: r.images
+    images: r.images,
+    credits: r.credits || []
   };
 }
 
@@ -31,11 +32,11 @@ function destinationParams(d) {
   return [
     d.slug, d.name.en, d.name.ru, d.short.en || '', d.short.ru || '', d.description.en || '', d.description.ru || '',
     d.region, d.categories, d.seasons, d.difficulty, d.scene || 'mountain', d.lat, d.lng, !!d.featured,
-    d.activities || [], (d.tips && d.tips.en) || [], (d.tips && d.tips.ru) || [], d.images || []
+    d.activities || [], (d.tips && d.tips.en) || [], (d.tips && d.tips.ru) || [], d.images || [], d.credits || []
   ];
 }
 
-const COLS = 'slug, name_en, name_ru, short_en, short_ru, description_en, description_ru, region, categories, seasons, difficulty, scene, lat, lng, featured, activities, tips_en, tips_ru, images';
+const COLS = 'slug, name_en, name_ru, short_en, short_ru, description_en, description_ru, region, categories, seasons, difficulty, scene, lat, lng, featured, activities, tips_en, tips_ru, images, credits';
 
 module.exports = {
   kind: 'postgres',

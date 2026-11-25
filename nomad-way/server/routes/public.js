@@ -3,13 +3,14 @@ const express = require('express');
 const store = require('../storage');
 const validate = require('../validate');
 const planner = require('../../public/js/planner');
+const telegram = require('../telegram');
 
 const router = express.Router();
 const wrap = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 
 router.get('/health', wrap(async (req, res) => {
   await store.ping();
-  res.json({ ok: true, storage: store.kind });
+  res.json({ ok: true, storage: store.kind, telegram: telegram.enabled() });
 }));
 
 // GET /api/destinations?q=&region=&category=&season=&difficulty=
@@ -49,6 +50,8 @@ router.post('/contact', wrap(async (req, res) => {
   const { value, errors } = validate.contact(req.body || {});
   if (errors.length) return res.status(400).json({ error: 'Invalid fields: ' + errors.join(', ') });
   await store.addMessage(value);
+  // Forward to the owner's Telegram (does not block or fail the request)
+  telegram.send(telegram.contactMessage(value)).catch(err => console.error('Telegram:', err.message));
   res.status(201).json({ ok: true });
 }));
 

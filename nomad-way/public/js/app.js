@@ -35,6 +35,7 @@
     coffee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 2v3M12 2v3"/></svg>',
     bus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="15" rx="3"/><path d="M4 11h16M7 18v3M17 18v3"/><circle cx="8" cy="14.5" r="1"/><circle cx="16" cy="14.5" r="1"/></svg>',
     info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
+    user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg>',
     mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
     phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>',
     ig: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>',
@@ -53,6 +54,8 @@
   var DIFFS = ['easy', 'moderate', 'hard'];
   var SCENES = ['lake', 'mountain', 'snow', 'canyon', 'forest', 'city', 'historic'];
 
+  var CONTACT = { name: 'Arsen Torobekov', phone: '0220 165 747', phoneIntl: '+996220165747', tg: 'playc4u' };
+  var TG_URL = 'https://t.me/' + CONTACT.tg;
   // ---------- State ----------
   var S = {
     lang: API.store.get('nw_lang', null) || ((navigator.language || 'en').slice(0, 2) === 'ru' ? 'ru' : 'en'),
@@ -83,13 +86,43 @@
     var segs = parts[0].split('/').filter(Boolean);
     return { path: '/' + (segs[0] || ''), param: segs[1] ? decodeURIComponent(segs[1]) : null, query: q };
   }
-  function media(d, variant, uid) {
+  // ---- Photos (Wikimedia Commons) with SVG fallback when an image can't load ----
+  function sizedUrl(u, w) { return /[?&]width=\d+/.test(u) ? u.replace(/([?&])width=\d+/, '$1width=' + w) : u; }
+  function fbAttrs(seed, scene, variant) { return ' data-fb-seed="' + esc(seed) + '" data-fb-scene="' + esc(scene) + '" data-fb-var="' + (variant || 0) + '"'; }
+  function imgTag(url, alt, w, seed, scene, variant, eager) {
+    return '<img src="' + esc(sizedUrl(url, w)) + '" alt="' + esc(alt || '') + '"' + (eager ? '' : ' loading="lazy"') + ' decoding="async"' + fbAttrs(seed, scene, variant) + '>';
+  }
+  function media(d, variant, uid, w) {
     variant = variant || 0;
-    if (d.images && d.images.length && d.images[variant % d.images.length]) {
-      return '<img src="' + esc(d.images[variant % d.images.length]) + '" alt="' + esc(loc(d.name)) + '" loading="lazy">';
+    if (d.images && d.images.length) {
+      return imgTag(d.images[variant % d.images.length], loc(d.name), w || 640, d.slug, d.scene || 'mountain', variant);
     }
     return Scenes.scene(d.slug, d.scene || 'mountain', variant, { uid: uid || '' });
   }
+  function commonsPage(url) {
+    var m = /Special:FilePath\/([^?]+)/.exec(url || '');
+    return m ? 'https://commons.wikimedia.org/wiki/File:' + m[1] : url;
+  }
+  // Site-wide backgrounds use photos of real destinations: seed -> [slug, image index]
+  var SITE_ART = {
+    'nomad-way-hero': ['song-kul', 0], 'explore-hero': ['ala-archa', 0], 'planner-hero': ['issyk-kul', 0], 'guide-hero': ['altyn-arashan', 0],
+    'about-hero': ['lenin-peak', 2], 'fav-hero': ['song-kul', 3], 'contact-hero': ['tash-rabat', 1], 'cta-band': ['lenin-peak', 0],
+    'cat-nature': ['sary-chelek', 0], 'cat-adv': ['ala-kul', 0], 'cat-cult': ['burana', 0], 'cat-hike': ['jeti-oguz', 0], 'cat-relax': ['issyk-kul', 1],
+    'about-1': ['lenin-peak', 2], 'about-2': ['tash-rabat', 0], 'about-3': ['song-kul', 1], 'manas-about': ['manas-ordo', 0], 'about-5': ['karakol', 3]
+  };
+  function art(seed, scene, variant, opts, w, eager) {
+    var ref = SITE_ART[seed], d = ref && bySlug(ref[0]);
+    if (d && d.images && d.images.length) return imgTag(d.images[ref[1] % d.images.length], loc(d.name), w || 1600, seed, scene, variant, eager);
+    return Scenes.scene(seed, scene, variant, opts);
+  }
+  // Replace any photo that fails to load (offline, blocked) with an illustrated scene
+  document.addEventListener('error', function (e) {
+    var img = e.target;
+    if (!img || img.tagName !== 'IMG' || !img.dataset || !img.dataset.fbSeed) return;
+    var wrap = document.createElement('span');
+    wrap.innerHTML = Scenes.scene(img.dataset.fbSeed, img.dataset.fbScene || 'mountain', +img.dataset.fbVar || 0, { uid: 'fb' + Math.random().toString(36).slice(2, 7) });
+    if (img.parentNode) img.parentNode.replaceChild(wrap.firstChild, img);
+  }, true);
   function toast(msg) {
     var el = document.getElementById('toast');
     el.textContent = msg; el.classList.add('show');
@@ -211,14 +244,15 @@
     document.getElementById('footer').innerHTML =
       '<div class="container"><div class="footer__grid">' +
       '<div><a class="logo" href="#/">' + I.logo + '<div>Nomad Way<small>' + esc(t('meta.tagline')) + '</small></div></a><p>' + esc(t('footer.text')) + '</p>' +
-      '<div class="socials"><a href="#/contact" aria-label="Instagram">' + I.ig + '</a><a href="#/contact" aria-label="Facebook">' + I.fb + '</a><a href="#/contact" aria-label="Telegram">' + I.tg + '</a><a href="#/contact" aria-label="YouTube">' + I.yt + '</a></div></div>' +
+      '<div class="socials"><a href="' + TG_URL + '" target="_blank" rel="noopener" aria-label="Telegram">' + I.tg + '</a><a href="tel:' + CONTACT.phoneIntl + '" aria-label="' + esc(t('contact.phone')) + '">' + I.phone + '</a></div>' +
+      '<p style="margin:14px 0 0;font-size:.9rem">' + esc(CONTACT.name) + ' · ' + esc(CONTACT.phone) + ' · <a href="' + TG_URL + '" target="_blank" rel="noopener">@' + CONTACT.tg + '</a></p></div>' +
       '<div><h4>' + esc(t('footer.explore')) + '</h4><ul><li><a href="#/explore">' + esc(t('nav.explore')) + '</a></li><li><a href="#/map">' + esc(t('nav.map')) + '</a></li><li><a href="#/planner">' + esc(t('nav.planner')) + '</a></li><li><a href="#/favorites">' + esc(t('nav.favorites')) + '</a></li></ul></div>' +
       '<div><h4>' + esc(t('footer.info')) + '</h4><ul><li><a href="#/guide">' + esc(t('nav.guide')) + '</a></li><li><a href="#/about">' + esc(t('nav.about')) + '</a></li><li><a href="#/contact">' + esc(t('nav.contact')) + '</a></li><li><a href="#/admin">' + esc(t('nav.admin')) + '</a></li></ul></div>' +
       '<div><h4>' + esc(t('nav.explore')) + '</h4><ul>' + CATS.map(function (c) { return '<li><a href="#/explore?category=' + c + '">' + esc(t('categories.' + c)) + '</a></li>'; }).join('') + '</ul></div>' +
-      '</div><div class="footer__bottom"><span>© ' + new Date().getFullYear() + ' Nomad Way. ' + esc(t('footer.rights')) + '</span><span>' + esc(t('meta.tagline')) + '</span></div></div>';
+      '</div><div class="footer__bottom"><span>© ' + new Date().getFullYear() + ' Nomad Way. ' + esc(t('footer.rights')) + '</span><span>' + esc(t('footer.photos')) + '</span></div></div>';
   }
   function pageHero(title, text, seed, scene, variant, extra) {
-    return '<section class="page-hero"><div class="page-hero__bg">' + Scenes.scene(seed, scene, variant || 0, { uid: 'ph' }) + '</div>' +
+    return '<section class="page-hero"><div class="page-hero__bg">' + art(seed, scene, variant || 0, { uid: 'ph' }, 1600, true) + '</div>' +
       '<div class="container">' + (extra || '') + '<h1>' + esc(title) + '</h1><p>' + esc(text) + '</p></div></section>';
   }
   function card(d) {
@@ -238,7 +272,7 @@
     var routes = (S.routes || []).filter(function (r, i, arr) { return arr.findIndex(function (x) { return x.duration === r.duration; }) === i; }).slice(0, 4);
     var catScene = { nature: ['cat-nature', 'lake', 0], adventure: ['cat-adv', 'snow', 3], culture: ['cat-cult', 'historic', 1], hiking: ['cat-hike', 'mountain', 0], relaxation: ['cat-relax', 'lake', 1] };
     return '<div class="page">' +
-      '<section class="hero"><div class="hero__bg">' + Scenes.scene('nomad-way-hero', 'lake', 1, { yurts: true, uid: 'hero' }) + '</div>' +
+      '<section class="hero"><div class="hero__bg">' + art('nomad-way-hero', 'lake', 1, { yurts: true, uid: 'hero' }, 1920, true) + '</div>' +
       '<div class="container"><div class="hero__content"><span class="eyebrow">' + esc(t('hero.eyebrow')) + '</span><h1>' + esc(t('hero.title')) + '</h1><p>' + esc(t('hero.text')) + '</p>' +
       '<form class="hero-search" id="heroSearch"><input name="q" type="search" placeholder="' + esc(t('hero.searchPlaceholder')) + '" aria-label="' + esc(t('hero.searchBtn')) + '"><button class="btn btn--primary" type="submit">' + I.search.replace('<svg', '<svg width="18" height="18"') + esc(t('hero.searchBtn')) + '</button></form>' +
       '<div class="hero__ctas"><a class="btn btn--light" href="#/planner">' + esc(t('hero.ctaPlan')) + ' ' + I.arrowR + '</a><a class="btn btn--outline-light" href="#/explore">' + esc(t('hero.ctaExplore')) + '</a></div>' +
@@ -252,7 +286,7 @@
       '<section class="section section--sand"><div class="container"><div class="section-head"><div><span class="eyebrow">' + esc(t('explore.category')) + '</span><h2>' + esc(t('home.categories')) + '</h2></div></div>' +
       '<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">' + CATS.map(function (c) {
         var cs = catScene[c];
-        return '<a class="cat-tile reveal" href="#/explore?category=' + c + '"><div class="cat-tile__bg">' + Scenes.scene(cs[0], cs[1], cs[2], { uid: 'cat' }) + '</div><div><h3>' + esc(t('categories.' + c)) + '</h3><p>' + esc(t('categoryText.' + c)) + '</p></div></a>';
+        return '<a class="cat-tile reveal" href="#/explore?category=' + c + '"><div class="cat-tile__bg">' + art(cs[0], cs[1], cs[2], { uid: 'cat' }, 800) + '</div><div><h3>' + esc(t('categories.' + c)) + '</h3><p>' + esc(t('categoryText.' + c)) + '</p></div></a>';
       }).join('') + '</div></div></section>' +
 
       '<section class="section"><div class="container"><div class="section-head"><div><span class="eyebrow">' + esc(t('nav.planner')) + '</span><h2>' + esc(t('home.routes')) + '</h2><p>' + esc(t('home.routesText')) + '</p></div></div>' +
@@ -266,7 +300,7 @@
       t('home.why').map(function (w, i) { return '<div class="why__item reveal"><div class="why__icon">' + [I.mountain, I.yurt, I.compass][i] + '</div><h3>' + esc(w.title) + '</h3><p style="color:var(--muted);margin:0">' + esc(w.text) + '</p></div>'; }).join('') +
       '</div></div></section>' +
 
-      '<section class="section"><div class="container"><div class="cta-band"><div class="cta-band__bg">' + Scenes.scene('cta-band', 'mountain', 2, { uid: 'cta' }) + '</div>' +
+      '<section class="section"><div class="container"><div class="cta-band"><div class="cta-band__bg">' + art('cta-band', 'mountain', 2, { uid: 'cta' }, 1600) + '</div>' +
       '<div><h2>' + esc(t('home.ctaTitle')) + '</h2><p style="margin:0;opacity:.9">' + esc(t('home.ctaText')) + '</p></div>' +
       '<div><a class="btn btn--light" href="#/planner">' + esc(t('hero.ctaPlan')) + ' ' + I.arrowR + '</a></div></div></div></section>' +
       '</div>';
@@ -338,12 +372,16 @@
     var similar = S.destinations.filter(function (x) {
       return x.slug !== d.slug && (x.region === d.region || x.categories.some(function (c) { return d.categories.indexOf(c) !== -1; }));
     }).sort(function (a, b) { return (b.region === d.region) - (a.region === d.region); }).slice(0, 4);
-    var nImg = Math.max(5, (d.images || []).length);
+    var nImg = d.images && d.images.length ? Math.min(d.images.length, 5) : 5;
     var gallery = [];
-    for (var i = 0; i < Math.min(nImg, 5); i++) gallery.push(i);
+    for (var i = 0; i < nImg; i++) gallery.push(i);
+    var credits = (d.images || []).slice(0, 5).map(function (u, k) {
+      var who = (d.credits && d.credits[k] && d.credits[k] !== 'Wikimedia Commons') ? d.credits[k] : '#' + (k + 1);
+      return '<a href="' + esc(commonsPage(u)) + '" target="_blank" rel="noopener">' + esc(who) + '</a>';
+    });
     var tips = (d.tips && (d.tips[S.lang] || d.tips.en)) || [];
     return '<div class="page">' +
-      '<section class="detail-hero"><div class="detail-hero__bg">' + media(d, 0, 'dh') + '</div><div class="container">' +
+      '<section class="detail-hero"><div class="detail-hero__bg">' + media(d, 0, 'dh', 1920) + '</div><div class="container">' +
       '<a class="crumb" href="#/explore">' + I.arrowL + esc(t('dest.back')) + '</a>' +
       '<div class="chips" style="margin-bottom:14px"><span class="chip">' + esc(t('regions.' + d.region)) + '</span>' + d.categories.map(function (c) { return '<span class="chip">' + esc(t('categories.' + c)) + '</span>'; }).join('') + '</div>' +
       '<h1>' + esc(loc(d.name)) + '</h1><p style="max-width:640px;font-size:1.1rem;opacity:.92;margin-bottom:20px">' + esc(loc(d.short)) + '</p>' +
@@ -351,7 +389,8 @@
       '<a class="btn btn--outline-light" href="#/map?focus=' + esc(d.slug) + '">' + I.pin.replace('<svg', '<svg width="18" height="18"') + esc(t('dest.openMap')) + '</a></div>' +
       '</div></section>' +
       '<section class="section"><div class="container detail-layout"><div class="detail-main">' +
-      '<h2>' + esc(t('dest.gallery')) + '</h2><div class="gallery">' + gallery.slice(0, 5).map(function (v) { return '<button data-gal="' + v + '" aria-label="' + esc(t('dest.gallery')) + ' ' + (v + 1) + '">' + media(d, v, 'g' + v) + '</button>'; }).join('') + '</div>' +
+      '<h2>' + esc(t('dest.gallery')) + '</h2><div class="gallery gallery--' + nImg + '">' + gallery.map(function (v) { return '<button data-gal="' + v + '" aria-label="' + esc(t('dest.gallery')) + ' ' + (v + 1) + '">' + media(d, v, 'g' + v, v === 0 ? 1280 : 640) + '</button>'; }).join('') + '</div>' +
+      (credits.length ? '<p class="credits">' + esc(t('dest.photos')) + ': ' + credits.join(', ') + ' · Wikimedia Commons</p>' : '') +
       '<h2>' + esc(t('dest.about')) + '</h2><p class="lead">' + esc(loc(d.description)) + '</p>' +
       '<h2 style="margin-top:32px">' + esc(t('dest.activities')) + '</h2><ul class="activity-list">' + (d.activities || []).map(function (a) { return '<li>' + I.check + esc(t('activities.' + a)) + '</li>'; }).join('') + '</ul>' +
       (tips.length ? '<h2>' + esc(t('dest.tips')) + '</h2><ul class="tips">' + tips.map(function (x) { return '<li>' + I.bulb + '<span>' + esc(x) + '</span></li>'; }).join('') + '</ul>' : '') +
@@ -380,19 +419,24 @@
   }
 
   // Lightbox
-  var LB = { d: null, i: 0 };
+  var LB = { d: null, i: 0, n: 5 };
   function openLightbox(d, i) {
-    LB.d = d; LB.i = i;
+    LB.d = d; LB.i = i; LB.n = d.images && d.images.length ? Math.min(d.images.length, 5) : 5;
     var el = document.getElementById('lightbox');
-    el.innerHTML = '<button class="lb-close" aria-label="' + esc(t('common.close')) + '">×</button><button class="lb-prev" aria-label="prev">‹</button><div class="lightbox__img" id="lbImg"></div><button class="lb-next" aria-label="next">›</button>';
+    el.innerHTML = '<button class="lb-close" aria-label="' + esc(t('common.close')) + '">×</button><button class="lb-prev" aria-label="prev">‹</button><figure class="lightbox__fig"><div class="lightbox__img" id="lbImg"></div><figcaption id="lbCap"></figcaption></figure><button class="lb-next" aria-label="next">›</button>';
     el.classList.add('open');
     drawLb();
     el.querySelector('.lb-close').onclick = closeLightbox;
-    el.querySelector('.lb-prev').onclick = function () { LB.i = (LB.i + 4) % 5; drawLb(); };
-    el.querySelector('.lb-next').onclick = function () { LB.i = (LB.i + 1) % 5; drawLb(); };
+    el.querySelector('.lb-prev').onclick = function () { LB.i = (LB.i + LB.n - 1) % LB.n; drawLb(); };
+    el.querySelector('.lb-next').onclick = function () { LB.i = (LB.i + 1) % LB.n; drawLb(); };
     el.onclick = function (e) { if (e.target === el) closeLightbox(); };
   }
-  function drawLb() { var box = document.getElementById('lbImg'); if (!box) return; box.innerHTML = media(LB.d, LB.i, 'lb' + LB.i); }
+  function drawLb() {
+    var box = document.getElementById('lbImg'); if (!box) return;
+    box.innerHTML = media(LB.d, LB.i, 'lb' + LB.i, 1600);
+    var cap = document.getElementById('lbCap'), u = LB.d.images && LB.d.images[LB.i];
+    if (cap) cap.innerHTML = esc(loc(LB.d.name)) + ' · ' + (LB.i + 1) + '/' + LB.n + (u ? ' · ' + esc(t('dest.photos')) + ': <a href="' + esc(commonsPage(u)) + '" target="_blank" rel="noopener">' + esc((LB.d.credits && LB.d.credits[LB.i]) || 'Wikimedia Commons') + '</a>' : '');
+  }
   function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
 
   function pageMap() {
@@ -484,7 +528,7 @@
       '<div class="plan-summary"><div><span class="eyebrow" style="color:#a9dcf0">' + esc(t('planner.result')) + '</span><h2>' + esc(loc(plan.template.title)) + '</h2><p style="margin:0;opacity:.9">' + esc(loc(plan.template.summary)) + '</p>' +
       '<div class="stats"><span>' + esc(t('planner.days', { n: plan.totalDays })) + '</span><span>' + esc(t('planner.stops', { n: plan.stops.length })) + '</span><span>' + esc(t('planner.km', { n: plan.totalKm })) + '</span><span>' + esc(t('seasons.' + plan.input.season)) + '</span><span>' + esc(t('planner.styles.' + plan.input.style)) + '</span></div>' +
       '<p style="margin:12px 0 0;font-size:.85rem;opacity:.8">' + esc(t('planner.seasonNote', { season: t('seasons.' + plan.input.season).toLowerCase() })) + '</p></div>' +
-      '<div class="actions"><button class="btn btn--light" id="saveRoute">' + esc(t('planner.saveRoute')) + '</button><button class="btn btn--outline-light" id="exportPdf">' + esc(t('planner.exportPdf')) + '</button></div></div>' +
+      '<div class="actions"><button class="btn btn--light" id="saveRoute">' + esc(t('planner.saveRoute')) + '</button><button class="btn btn--outline-light" id="exportPdf">' + esc(t('planner.exportPdf')) + '</button><a class="btn btn--outline-light" id="shareTg" target="_blank" rel="noopener" href="' + esc(tgShareUrl(plan)) + '">' + I.tg.replace('<svg', '<svg width="18" height="18"') + esc(t('planner.shareTg')) + '</a></div></div>' +
       '<ol class="timeline">' + timeline + '</ol><div class="plan-map" id="planMap"></div></div>';
     destroyMaps();
     var mapEl = document.getElementById('planMap');
@@ -509,6 +553,18 @@
     };
     document.getElementById('exportPdf').onclick = function () { window.print(); };
     out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function tgShareUrl(plan) {
+    var lines = [loc(plan.template.title) + ' — ' + t('planner.days', { n: plan.totalDays })];
+    var last = null;
+    plan.days.forEach(function (day) {
+      if (day.slug === last) return;
+      last = day.slug;
+      var d = bySlug(day.slug);
+      if (d) lines.push(t('planner.day', { n: day.day }) + ': ' + loc(d.name));
+    });
+    var site = location.protocol.indexOf('http') === 0 ? location.origin + location.pathname + '#/planner' : '';
+    return 'https://t.me/share/url?url=' + encodeURIComponent(site || 'https://t.me/' + CONTACT.tg) + '&text=' + encodeURIComponent(lines.join('\n'));
   }
   function renderSaved() {
     var el = document.getElementById('savedRoutes'); if (!el) return;
@@ -553,13 +609,13 @@
   }
 
   function pageAbout() {
-    var art = [['about-1', 'snow', 0], ['about-2', 'historic', 1], ['about-3', 'lake', 3], ['manas-about', 'historic', 2], ['about-5', 'city', 1]];
+    var aboutArt = [['about-1', 'snow', 0], ['about-2', 'historic', 1], ['about-3', 'lake', 3], ['manas-about', 'historic', 2], ['about-5', 'city', 1]];
     return '<div class="page">' + pageHero(t('about.title'), t('about.text'), 'about-hero', 'snow', 1) +
       '<section class="section"><div class="container"><h2>' + esc(t('about.factsTitle')) + '</h2><div class="facts-grid">' +
       t('about.facts').map(function (f) { return '<div class="fact-tile reveal"><span>' + esc(f.label) + '</span><b>' + esc(f.value) + '</b></div>'; }).join('') + '</div>' +
       t('about.sections').map(function (s, i) {
-        var a = art[i % art.length];
-        return '<div class="about-row reveal"><div class="about-row__media">' + Scenes.scene(a[0], a[1], a[2], { yurts: i === 2, uid: 'ab' + i }) + '</div><div><h2>' + esc(s.title) + '</h2><p>' + esc(s.text) + '</p></div></div>';
+        var a = aboutArt[i % aboutArt.length];
+        return '<div class="about-row reveal"><div class="about-row__media">' + art(a[0], a[1], a[2], { yurts: i === 2, uid: 'ab' + i }, 1200) + '</div><div><h2>' + esc(s.title) + '</h2><p>' + esc(s.text) + '</p></div></div>';
       }).join('') + '</div></section></div>';
   }
 
@@ -586,9 +642,11 @@
       '<button class="btn btn--primary" type="submit">' + esc(t('contact.send')) + ' ' + I.arrowR + '</button></form>' +
       '<aside class="info-side"><h3>' + esc(t('contact.info')) + '</h3>' +
       '<div class="info-line">' + I.pin + '<span>' + esc(t('contact.address')) + '</span></div>' +
-      '<div class="info-line">' + I.mail + '<span>hello@nomadway.kg</span></div>' +
-      '<div class="info-line">' + I.phone + '<span>+996 (555) 00-00-00</span></div>' +
-      '<h3 style="margin-top:10px">' + esc(t('contact.follow')) + '</h3><div class="socials"><a href="#/contact" aria-label="Instagram">' + I.ig + '</a><a href="#/contact" aria-label="Facebook">' + I.fb + '</a><a href="#/contact" aria-label="Telegram">' + I.tg + '</a><a href="#/contact" aria-label="YouTube">' + I.yt + '</a></div>' +
+      '<div class="info-line">' + I.user + '<span><small style="display:block;opacity:.75">' + esc(t('contact.owner')) + '</small>' + esc(CONTACT.name) + '</span></div>' +
+      '<div class="info-line">' + I.phone + '<span><small style="display:block;opacity:.75">' + esc(t('contact.phone')) + '</small><a style="color:#fff" href="tel:' + CONTACT.phoneIntl + '">' + esc(CONTACT.phone) + '</a></span></div>' +
+      '<div class="info-line">' + I.tg + '<span><small style="display:block;opacity:.75">Telegram</small><a style="color:#fff" href="' + TG_URL + '" target="_blank" rel="noopener">@' + CONTACT.tg + '</a></span></div>' +
+      '<a class="btn btn--light" style="margin-top:6px" href="' + TG_URL + '" target="_blank" rel="noopener">' + I.tg.replace('<svg', '<svg width="18" height="18"') + esc(t('contact.writeTg')) + '</a>' +
+      '<p style="margin:0;font-size:.85rem;opacity:.8">' + esc(t('contact.tgNote')) + '</p>' +
       '</aside></div><div style="height:80px"></div></div></div>';
   }
   function bindContact() {
@@ -709,6 +767,7 @@
       '<div class="field full"><label for="e-acts">' + esc(t('admin.activitiesLbl')) + '</label><input class="input" id="e-acts" value="' + esc((d.activities || []).join(', ')) + '"><small style="color:var(--muted)">' + esc(Object.keys(t('activities')).join(', ')) + '</small></div>' +
       ta('e-tips-en', t('admin.tipsEn'), ((d.tips && d.tips.en) || []).join('\n')) + ta('e-tips-ru', t('admin.tipsRu'), ((d.tips && d.tips.ru) || []).join('\n')) +
       ta('e-images', t('admin.images'), (d.images || []).join('\n'), true) +
+      ta('e-credits', t('admin.credits'), (d.credits || []).join('\n'), true) +
       '<div class="field full"><label class="checks"><label><input type="checkbox" id="e-featured"' + (d.featured ? ' checked' : '') + '> ' + esc(t('admin.featured')) + '</label></label></div>' +
       '<div class="full" style="display:flex;gap:10px"><button class="btn btn--primary" type="submit">' + esc(t('admin.save')) + '</button><button class="btn btn--ghost" type="button" id="cancelEdit">' + esc(t('admin.cancel')) + '</button></div>' +
       '</form></div>';
@@ -731,6 +790,7 @@
         activities: v('e-acts').split(',').map(function (s) { return s.trim(); }).filter(Boolean),
         tips: { en: lines('e-tips-en'), ru: lines('e-tips-ru') },
         images: lines('e-images'),
+        credits: v('e-credits').split('\n').map(function (s) { return s.trim(); }),
         featured: document.getElementById('e-featured').checked
       };
       if (!d.slug || !d.name.en || !d.name.ru || !d.categories.length || !d.seasons.length || isNaN(d.lat) || isNaN(d.lng)) { toast(t('contact.required')); return; }
@@ -793,8 +853,8 @@
     var lb = document.getElementById('lightbox');
     if (!lb.classList.contains('open')) return;
     if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') { LB.i = (LB.i + 1) % 5; drawLb(); }
-    if (e.key === 'ArrowLeft') { LB.i = (LB.i + 4) % 5; drawLb(); }
+    if (e.key === 'ArrowRight') { LB.i = (LB.i + 1) % LB.n; drawLb(); }
+    if (e.key === 'ArrowLeft') { LB.i = (LB.i + LB.n - 1) % LB.n; drawLb(); }
   });
   window.addEventListener('hashchange', render);
 
