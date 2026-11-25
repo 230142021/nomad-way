@@ -1,0 +1,463 @@
+{
+  "meta": {
+    "title": "Nomad Way — Your Journey Begins Here",
+    "tagline": "Your Journey Begins Here"
+  },
+  "nav": {
+    "home": "Home",
+    "explore": "Explore",
+    "map": "Map",
+    "planner": "Trip Planner",
+    "guide": "Travel Guide",
+    "about": "About Kyrgyzstan",
+    "favorites": "Favorites",
+    "contact": "Contact",
+    "admin": "Admin",
+    "menu": "Menu"
+  },
+  "hero": {
+    "eyebrow": "Kyrgyzstan · Tien Shan · Silk Road",
+    "title": "Discover the land of celestial mountains",
+    "text": "Alpine lakes, nomad yurts, Silk Road towers and trails that lead above the clouds. Find your places and build a route in minutes.",
+    "searchPlaceholder": "Search destinations — e.g. Song-Kul, Karakol…",
+    "searchBtn": "Search",
+    "ctaPlan": "Plan my trip",
+    "ctaExplore": "Explore destinations",
+    "stat1": "destinations",
+    "stat2": "of the country is mountains",
+    "stat3": "alpine lakes"
+  },
+  "home": {
+    "popular": "Popular destinations",
+    "popularText": "Places travelers love most — from turquoise lakes to ancient caravan stops.",
+    "seeAll": "See all destinations",
+    "categories": "Travel your way",
+    "routes": "Recommended routes",
+    "routesText": "Ready-made itineraries you can customize in the Trip Planner.",
+    "openPlanner": "Customize in planner",
+    "whyTitle": "Why Kyrgyzstan?",
+    "why": [
+      {
+        "title": "Wild nature",
+        "text": "Over 90% of the country is mountains, with thousands of lakes and glaciers."
+      },
+      {
+        "title": "Living nomad culture",
+        "text": "Stay in a yurt, ride horses with shepherds, taste kymyz and fresh bread."
+      },
+      {
+        "title": "Easy to visit",
+        "text": "Visa-free entry for many nationalities and friendly, affordable travel."
+      }
+    ],
+    "ctaTitle": "Ready for your journey?",
+    "ctaText": "Tell us how many days you have and what you love — we will suggest a day-by-day route."
+  },
+  "explore": {
+    "title": "Explore destinations",
+    "text": "Search and filter places across all regions of Kyrgyzstan.",
+    "search": "Search by name…",
+    "region": "Region",
+    "category": "Category",
+    "season": "Season",
+    "difficulty": "Difficulty",
+    "all": "All",
+    "reset": "Reset filters",
+    "results": "{n} destinations found",
+    "noResults": "No destinations match your filters. Try resetting them.",
+    "sort": "Sort",
+    "sortFeatured": "Popular first",
+    "sortName": "Name A–Z"
+  },
+  "regions": {
+    "chuy": "Chuy",
+    "issykkul": "Issyk-Kul",
+    "naryn": "Naryn",
+    "jalalabad": "Jalal-Abad",
+    "osh": "Osh",
+    "talas": "Talas",
+    "batken": "Batken"
+  },
+  "categories": {
+    "nature": "Nature",
+    "adventure": "Adventure",
+    "culture": "Culture",
+    "hiking": "Hiking",
+    "relaxation": "Relaxation"
+  },
+  "categoryText": {
+    "nature": "Lakes, valleys and national parks",
+    "adventure": "Treks, rafting, skiing and peaks",
+    "culture": "Silk Road heritage and nomad life",
+    "hiking": "Day hikes and multi-day trails",
+    "relaxation": "Beaches, hot springs and calm"
+  },
+  "seasons": {
+    "spring": "Spring",
+    "summer": "Summer",
+    "autumn": "Autumn",
+    "winter": "Winter"
+  },
+  "difficulty": {
+    "easy": "Easy",
+    "moderate": "Moderate",
+    "hard": "Challenging"
+  },
+  "activities": {
+    "swimming": "Swimming",
+    "beach": "Beach",
+    "boating": "Boating",
+    "cycling": "Cycling",
+    "photography": "Photography",
+    "hiking": "Hiking",
+    "climbing": "Climbing",
+    "picnic": "Picnic",
+    "horse-riding": "Horse riding",
+    "yurt-stay": "Yurt stay",
+    "stargazing": "Stargazing",
+    "birdwatching": "Birdwatching",
+    "sightseeing": "Sightseeing",
+    "food": "Local food",
+    "skiing": "Skiing",
+    "museum": "Museum",
+    "hot-springs": "Hot springs",
+    "camping": "Camping",
+    "trekking": "Trekking",
+    "rafting": "Rafting",
+    "homestay": "Homestay",
+    "snowboarding": "Snowboarding",
+    "freeride": "Freeride",
+    "shopping": "Shopping"
+  },
+  "dest": {
+    "back": "Back to destinations",
+    "about": "About",
+    "activities": "Activities",
+    "tips": "Travel tips",
+    "location": "Location",
+    "facts": "Quick facts",
+    "bestSeason": "Best season",
+    "openMap": "Open on the big map",
+    "gallery": "Photo gallery",
+    "save": "Save to favorites",
+    "saved": "Saved",
+    "similar": "You may also like",
+    "notFound": "Destination not found.",
+    "coords": "Coordinates",
+    "addPlanner": "Plan a trip here"
+  },
+  "map": {
+    "title": "Interactive map",
+    "text": "Click a marker to see the place and open its page.",
+    "open": "Open page",
+    "filterAll": "All categories",
+    "loading": "Loading map…",
+    "offline": "The map could not be loaded (no internet connection to the map tiles). Destinations are listed below.",
+    "schematic": "Schematic map"
+  },
+  "planner": {
+    "title": "Trip Planner",
+    "text": "Answer four quick questions and get a personalized day-by-day route.",
+    "step1": "How long is your trip?",
+    "step2": "What are you interested in?",
+    "step2hint": "Choose one or more",
+    "step3": "When are you traveling?",
+    "step4": "What is your travel style?",
+    "durations": {
+      "1-3": "1–3 days",
+      "4-7": "4–7 days",
+      "8-14": "8–14 days",
+      "14+": "14+ days"
+    },
+    "interests": {
+      "nature": "Nature",
+      "mountains": "Mountains",
+      "culture": "Culture",
+      "adventure": "Adventure"
+    },
+    "styles": {
+      "relaxed": "Relaxed",
+      "balanced": "Balanced",
+      "active": "Active"
+    },
+    "styleText": {
+      "relaxed": "Fewer places, more time in each",
+      "balanced": "A mix of moving and resting",
+      "active": "See as much as possible"
+    },
+    "generate": "Generate my route",
+    "regenerate": "Change answers",
+    "result": "Your suggested route",
+    "days": "{n} days",
+    "stops": "{n} places",
+    "km": "≈ {n} km on the road",
+    "day": "Day {n}",
+    "start": "Start in",
+    "arrive": "Travel to",
+    "explore": "Explore",
+    "free": "Free day / rest in",
+    "drive": "≈ {km} km · {h} h drive from {from}",
+    "freeText": "Relax, wander at your own pace or add an optional activity.",
+    "saveRoute": "Save route",
+    "routeSaved": "Route saved!",
+    "exportPdf": "Export as PDF",
+    "savedRoutes": "Saved routes",
+    "noSaved": "You have no saved routes yet.",
+    "delete": "Delete",
+    "open": "Open",
+    "based": "Based on template",
+    "seasonNote": "Only places that are accessible in {season} are included."
+  },
+  "favorites": {
+    "title": "Favorites",
+    "text": "Your saved destinations — stored in this browser.",
+    "empty": "You have not saved any destinations yet.",
+    "browse": "Browse destinations",
+    "clear": "Clear all",
+    "confirmClear": "Remove all favorites?"
+  },
+  "contact": {
+    "title": "Contact us",
+    "text": "Questions about traveling in Kyrgyzstan? Write to us and we will reply within 1–2 days.",
+    "name": "Your name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "success": "Thank you! Your message has been sent.",
+    "error": "Something went wrong. Please try again.",
+    "required": "Please fill in all required fields.",
+    "invalidEmail": "Please enter a valid email address.",
+    "info": "Contact information",
+    "address": "Bishkek, Kyrgyzstan",
+    "follow": "Follow us"
+  },
+  "guide": {
+    "title": "Travel guide",
+    "text": "Everything you need to know before your trip.",
+    "sections": [
+      {
+        "id": "transport",
+        "icon": "bus",
+        "title": "Getting around",
+        "items": [
+          {
+            "title": "Arriving",
+            "text": "Most travelers arrive at Manas International Airport (FRU) in Bishkek or Osh Airport (OSS). Taxi apps work in both cities."
+          },
+          {
+            "title": "Shared taxis & marshrutkas",
+            "text": "Minibuses (marshrutkas) and shared taxis connect all towns cheaply. In Bishkek they leave from the Western and Eastern bus stations."
+          },
+          {
+            "title": "Car with driver",
+            "text": "For remote places like Song-Kul or Kel-Suu, hire a 4x4 with a driver through a local tour company or CBT office."
+          },
+          {
+            "title": "Domestic flights",
+            "text": "Flights between Bishkek and Osh take about 1 hour and save a long 10–12 hour drive."
+          }
+        ]
+      },
+      {
+        "id": "seasons",
+        "icon": "sun",
+        "title": "When to go",
+        "items": [
+          {
+            "title": "Summer (June–September)",
+            "text": "The main season. High passes and jailoos are open, yurt camps work, and Issyk-Kul is warm enough for swimming."
+          },
+          {
+            "title": "Spring (April–May)",
+            "text": "Green valleys and blooming hills, great for canyons and lower hikes. High mountains still have snow."
+          },
+          {
+            "title": "Autumn (September–October)",
+            "text": "Golden forests, clear skies and walnut harvest in Arslanbob. Nights get cold in the mountains."
+          },
+          {
+            "title": "Winter (December–March)",
+            "text": "Skiing in Karakol and around Bishkek, hot springs and snowy landscapes. Many high roads are closed."
+          }
+        ]
+      },
+      {
+        "id": "culture",
+        "icon": "yurt",
+        "title": "Culture & etiquette",
+        "items": [
+          {
+            "title": "Hospitality",
+            "text": "Guests are honored. If invited for tea, accept at least one cup; bread (nan) should never be put upside down or thrown away."
+          },
+          {
+            "title": "In a yurt",
+            "text": "The place opposite the door (tör) is for honored guests. Don't step on the threshold and take off your shoes inside."
+          },
+          {
+            "title": "Dress",
+            "text": "Casual clothes are fine in cities. Dress modestly at mosques, shrines and in rural villages."
+          },
+          {
+            "title": "Language",
+            "text": "Kyrgyz and Russian are official. A few words help a lot: Salamatsyzby (hello), Rakhmat (thank you)."
+          }
+        ]
+      },
+      {
+        "id": "useful",
+        "icon": "info",
+        "title": "Useful information",
+        "items": [
+          {
+            "title": "Visa",
+            "text": "Citizens of many countries can visit visa-free for up to 60 days. Always check the latest rules before you travel."
+          },
+          {
+            "title": "Money",
+            "text": "The currency is the Kyrgyz som (KGS). Cards work in cities; carry cash for villages, yurt camps and markets."
+          },
+          {
+            "title": "SIM & internet",
+            "text": "Buy a local SIM (Beeline, MegaCom, O!) at the airport with your passport. Mobile internet is cheap and fast in towns."
+          },
+          {
+            "title": "Safety",
+            "text": "Kyrgyzstan is generally safe. In the mountains, tell someone your plan, watch the weather and consider a guide for high treks."
+          },
+          {
+            "title": "Border zones",
+            "text": "Areas near the Chinese and Tajik borders (e.g. Kel-Suu, Chatyr-Kul) need a border-zone permit arranged in advance."
+          }
+        ]
+      }
+    ]
+  },
+  "about": {
+    "title": "About Kyrgyzstan",
+    "text": "A mountainous country in the heart of Central Asia, on the ancient Silk Road.",
+    "factsTitle": "Key facts",
+    "facts": [
+      {
+        "label": "Capital",
+        "value": "Bishkek"
+      },
+      {
+        "label": "Area",
+        "value": "199,951 km²"
+      },
+      {
+        "label": "Population",
+        "value": "≈ 7 million"
+      },
+      {
+        "label": "Languages",
+        "value": "Kyrgyz, Russian"
+      },
+      {
+        "label": "Currency",
+        "value": "Kyrgyz som (KGS)"
+      },
+      {
+        "label": "Highest peak",
+        "value": "Jengish Chokusu, 7,439 m"
+      },
+      {
+        "label": "Time zone",
+        "value": "UTC+6"
+      },
+      {
+        "label": "Largest lake",
+        "value": "Issyk-Kul, 6,236 km²"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Land of mountains",
+        "text": "The Tien Shan and Pamir-Alay ranges cover more than 90% of Kyrgyzstan. Glaciers feed thousands of rivers and lakes, and summer pastures (jailoo) stretch across high plateaus where herders still move with their animals."
+      },
+      {
+        "title": "History on the Silk Road",
+        "text": "For centuries caravans crossed this land between China and the West. Cities like Balasagun, Osh and Uzgen flourished, leaving towers, caravanserais and petroglyphs. Kyrgyzstan became an independent republic in 1991."
+      },
+      {
+        "title": "Nomadic heritage",
+        "text": "The yurt (boz üy) is the symbol of Kyrgyz culture — its crown (tündük) is even on the national flag. Horse games like kok-boru, felt carpets (shyrdak), the white kalpak hat and the World Nomad Games keep traditions alive."
+      },
+      {
+        "title": "The epic of Manas",
+        "text": "The epic of Manas tells the story of the hero who united the Kyrgyz tribes. It is one of the longest epic poems in the world and is recited by storytellers called manaschy."
+      },
+      {
+        "title": "Food",
+        "text": "Try beshbarmak (noodles with meat), plov, lagman, manty, samsa from a tandoor oven, fresh boorsok and drinks like kymyz (fermented mare's milk) and maksym."
+      }
+    ]
+  },
+  "admin": {
+    "title": "Administrator panel",
+    "login": "Log in",
+    "logout": "Log out",
+    "username": "Username",
+    "password": "Password",
+    "loginError": "Wrong username or password.",
+    "demoHint": "Demo mode: username admin, password admin123. Changes are saved in this browser.",
+    "dashboard": "Dashboard",
+    "destinations": "Destinations",
+    "messages": "Messages",
+    "routes": "Route templates",
+    "add": "Add destination",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save changes",
+    "cancel": "Cancel",
+    "confirmDelete": "Delete this destination?",
+    "saved": "Saved successfully.",
+    "noMessages": "No messages yet.",
+    "slug": "Slug (URL id)",
+    "nameEn": "Name (EN)",
+    "nameRu": "Name (RU)",
+    "shortEn": "Short description (EN)",
+    "shortRu": "Short description (RU)",
+    "descEn": "Description (EN)",
+    "descRu": "Description (RU)",
+    "lat": "Latitude",
+    "lng": "Longitude",
+    "images": "Photo URLs (one per line)",
+    "featured": "Show on homepage",
+    "activitiesLbl": "Activities (comma separated keys)",
+    "tipsEn": "Tips EN (one per line)",
+    "tipsRu": "Tips RU (one per line)",
+    "scene": "Illustration style",
+    "total": "Total destinations",
+    "featuredCount": "Featured",
+    "messagesCount": "Messages",
+    "routesCount": "Route templates",
+    "routesJson": "Route templates (JSON)",
+    "invalidJson": "Invalid JSON.",
+    "mode": "Mode",
+    "modeServer": "Server + database",
+    "modeLocal": "Demo (browser storage)",
+    "resetDemo": "Reset demo data",
+    "from": "From",
+    "date": "Date"
+  },
+  "footer": {
+    "text": "A bilingual travel guide to Kyrgyzstan's mountains, lakes and nomad culture.",
+    "explore": "Explore",
+    "info": "Information",
+    "rights": "All rights reserved."
+  },
+  "common": {
+    "loading": "Loading…",
+    "details": "Details",
+    "close": "Close",
+    "days": "days",
+    "language": "Language",
+    "toastFav": "Added to favorites",
+    "toastUnfav": "Removed from favorites",
+    "allYear": "All year"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "nomad-way",
+  "version": "1.0.0",
+  "description": "Nomad Way — bilingual (EN/RU) tourism website for Kyrgyzstan: destinations, interactive map, trip planner, favorites and admin panel.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "db:init": "psql \"$DATABASE_URL\" -f db/schema.sql",
+    "db:seed": "node db/seed.js",
+    "build:static": "node scripts/build-static.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  },
+  "license": "MIT"
+}

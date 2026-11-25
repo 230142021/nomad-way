@@ -1,0 +1,74 @@
+[
+  {
+    "id": "bishkek-around",
+    "duration": "1-3",
+    "title": { "en": "Bishkek & Mountain Day Trips", "ru": "Бишкек и горы рядом" },
+    "summary": { "en": "The capital plus easy escapes to alpine gorges and the Silk Road.", "ru": "Столица и лёгкие выезды в горные ущелья и на Шёлковый путь." },
+    "interests": ["nature", "mountains", "culture"],
+    "start": "bishkek",
+    "stops": ["bishkek", "ala-archa", "kol-tor", "burana", "konorchek"]
+  },
+  {
+    "id": "issykkul-escape",
+    "duration": "1-3",
+    "title": { "en": "Issyk-Kul Short Escape", "ru": "Короткий отдых на Иссык-Куле" },
+    "summary": { "en": "Beaches, petroglyphs and the colorful south-shore canyons.", "ru": "Пляжи, петроглифы и разноцветные каньоны южного берега." },
+    "interests": ["nature", "culture"],
+    "start": "issyk-kul",
+    "stops": ["issyk-kul", "cholpon-ata-petroglyphs", "skazka", "barskoon"]
+  },
+  {
+    "id": "karakol-weekend",
+    "duration": "1-3",
+    "title": { "en": "Karakol Adventure Weekend", "ru": "Приключенческие выходные в Караколе" },
+    "summary": { "en": "Red cliffs, hot springs and — in winter — powder skiing.", "ru": "Красные скалы, горячие источники, а зимой — лыжи по пухляку." },
+    "interests": ["mountains", "adventure"],
+    "start": "karakol",
+    "stops": ["karakol", "jeti-oguz", "altyn-arashan", "karakol-ski"]
+  },
+  {
+    "id": "issykkul-loop",
+    "duration": "4-7",
+    "title": { "en": "Classic Issyk-Kul Loop", "ru": "Классическое кольцо Иссык-Куля" },
+    "summary": { "en": "A full circle around the great lake: valleys, culture, canyons and Karakol.", "ru": "Полный круг вокруг озера: долины, культура, каньоны и Каракол." },
+    "interests": ["nature", "culture"],
+    "start": "bishkek",
+    "stops": ["bishkek", "burana", "chon-kemin", "cholpon-ata-petroglyphs", "issyk-kul", "karakol", "jeti-oguz", "skazka", "barskoon"]
+  },
+  {
+    "id": "karakol-mountains",
+    "duration": "4-7",
+    "title": { "en": "Peaks & Hot Springs of Karakol", "ru": "Вершины и источники Каракола" },
+    "summary": { "en": "The famous Ala-Kul trek, Altyn-Arashan springs and alpine valleys.", "ru": "Знаменитый поход к Ала-Кулю, источники Алтын-Арашана и альпийские долины." },
+    "interests": ["mountains", "adventure", "nature"],
+    "start": "bishkek",
+    "stops": ["bishkek", "ala-archa", "issyk-kul", "karakol", "ala-kul", "altyn-arashan", "karakol-ski", "jeti-oguz"]
+  },
+  {
+    "id": "nomad-heartland",
+    "duration": "8-14",
+    "title": { "en": "Nomad Heartland", "ru": "Сердце кочевников" },
+    "summary": { "en": "Yurt stays at Song-Kul, the Silk Road caravanserai and remote Kel-Suu.", "ru": "Юрты на Сон-Куле, караван-сарай Шёлкового пути и далёкий Кёль-Суу." },
+    "interests": ["culture", "nature", "adventure"],
+    "start": "bishkek",
+    "stops": ["bishkek", "burana", "konorchek", "song-kul", "kel-suu", "tash-rabat", "barskoon", "skazka", "jeti-oguz", "karakol", "issyk-kul", "cholpon-ata-petroglyphs"]
+  },
+  {
+    "id": "south-pamir",
+    "duration": "8-14",
+    "title": { "en": "The South: Walnut Forests, Osh & Pamir", "ru": "Юг: ореховые леса, Ош и Памир" },
+    "summary": { "en": "Ancient Osh, the Lenin Peak base camp and lakes of the western Tien Shan.", "ru": "Древний Ош, лагерь под пиком Ленина и озёра Западного Тянь-Шаня." },
+    "interests": ["mountains", "adventure", "culture"],
+    "start": "bishkek",
+    "stops": ["bishkek", "manas-ordo", "sary-chelek", "arslanbob", "sulaiman-too", "lenin-peak"]
+  },
+  {
+    "id": "grand-kyrgyzstan",
+    "duration": "14+",
+    "title": { "en": "Grand Kyrgyzstan", "ru": "Большой Кыргызстан" },
+    "summary": { "en": "The whole country: north, Issyk-Kul, the Naryn highlands and the south.", "ru": "Вся страна: север, Иссык-Куль, нарынское высокогорье и юг." },
+    "interests": ["nature", "mountains", "culture", "adventure"],
+    "start": "bishkek",
+    "stops": ["bishkek", "ala-archa", "burana", "konorchek", "chon-kemin", "cholpon-ata-petroglyphs", "issyk-kul", "karakol", "ala-kul", "altyn-arashan", "karakol-ski", "jeti-oguz", "skazka", "barskoon", "song-kul", "kel-suu", "tash-rabat", "sulaiman-too", "lenin-peak", "arslanbob", "sary-chelek", "manas-ordo"]
+  }
+]
